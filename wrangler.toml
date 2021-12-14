@@ -1,0 +1,10 @@
+account_id = "62c78308ac5d6ac35b1c395a4fc5abc8"
+name = "cfworkers-ld"
+type = "webpack"
+webpack_config = "webpack.config.js"
+workers_dev = true
+kv_namespaces = [
+  { binding = "MY_KV", preview_id = "e88af073edb14c929600e62218359bfd", id = "ffc9417d31f54731be4a6fd77aa795cc" },
+]
+site = { bucket = "./public" }
+compatibility_date = "2021-12-13"
