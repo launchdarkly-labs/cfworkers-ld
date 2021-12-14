@@ -2,7 +2,7 @@ import {
   getAssetFromKV,
   mapRequestToAsset,
 } from "@cloudflare/kv-asset-handler";
-import LaunchDarkly from "launchdarkly-node-server-sdk";
+const { init } = require("launchdarkly-cloudflare-edge-sdk");
 
 /**
  * The DEBUG flag will do two things that help during development:
@@ -14,8 +14,9 @@ import LaunchDarkly from "launchdarkly-node-server-sdk";
 const DEBUG = false;
 
 class ElementHandler {
-  element(element) {
-    element.setInnerContent("Changed");
+  async element(element) {
+    const headerText = await getFlagValue("header-text");
+    element.setInnerContent(headerText);
   }
 }
 const rewriter = new HTMLRewriter().on("h1", new ElementHandler());
@@ -24,6 +25,17 @@ let ldClient;
 addEventListener("fetch", (event) => {
   event.respondWith(handleEvent(event));
 });
+
+async function getFlagValue(key, user) {
+  let flagValue;
+  if (!user) {
+    user = {
+      key: "anonymous",
+    };
+  }
+  flagValue = await ldClient.variation(key, user, false);
+  return flagValue;
+}
 
 async function handleEvent(event) {
   let options = {};
@@ -43,7 +55,7 @@ async function handleEvent(event) {
     }
 
     if (!ldClient) {
-      ldClient = LaunchDarkly.init(MY_KV, "61409b046ca8d52601d179ef");
+      ldClient = init(MY_KV, "61409b046ca8d52601d179ef");
       await ldClient.waitForInitialization();
     }
 
