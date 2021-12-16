@@ -1,5 +1,5 @@
 ---
-title: "Hi 👋 from LaunchDarkly"
+title: "Unchanged Header"
 headless: true
 ---
 

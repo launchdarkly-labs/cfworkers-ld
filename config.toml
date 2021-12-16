@@ -1,4 +1,6 @@
-baseURL = 'https://cfpages-hugo.pages.dev/'
+baseURL = 'http://127.0.0.1:8787/'
 languageCode = 'en-us'
 title = 'My New Hugo Site'
 theme = "introduction"
+[params]
+    customJS = ["ldclient.min.js", "custom.js"]

@@ -13,13 +13,30 @@ const { init } = require("launchdarkly-cloudflare-edge-sdk");
  */
 const DEBUG = false;
 
+class FlagsStateInjector {
+  async element(element) {
+    // fetch all flag values for client-side SDKs as evaluated for an anonymous user
+    // use a more appropriate user key if needed
+    const user = { key: "anonymous" };
+    const allFlags = await ldClient.allFlagsState(user, {
+      clientSideOnly: true,
+    });
+    element.append(
+      `<script>window.ldFlags = ${JSON.stringify(allFlags)}</script>`,
+      { html: true }
+    );
+  }
+}
+
 class ElementHandler {
   async element(element) {
     const headerText = await getFlagValue("header-text");
     element.setInnerContent(headerText);
   }
 }
-const rewriter = new HTMLRewriter().on("h1", new ElementHandler());
+const rewriter = new HTMLRewriter();
+rewriter.on("h1", new ElementHandler());
+rewriter.on("head", new FlagsStateInjector());
 let ldClient;
 
 addEventListener("fetch", (event) => {
