@@ -57,10 +57,10 @@ async function handleEvent(event) {
     // allow headers to be altered
     const response = new Response(page.body, page);
 
-    response.headers.set("X-XSS-Protection", "1; mode=block");
-    response.headers.set("X-Content-Type-Options", "nosniff");
-    response.headers.set("X-Frame-Options", "DENY");
-    response.headers.set("Referrer-Policy", "unsafe-url");
+    const customHeader = await getFlagValue("custom-response-headers");
+    customHeader.headers.forEach((header) => {
+      response.headers.set(header.name, header.value);
+    });
 
     return rewriter.transform(response);
   } catch (e) {
