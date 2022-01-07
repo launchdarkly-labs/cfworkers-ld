@@ -1,5 +1,6 @@
 import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
 const { init } = require("launchdarkly-cloudflare-edge-sdk");
+let ldClient;
 
 class FlagsStateInjector {
   async element(element) {
@@ -26,7 +27,6 @@ class H1ElementHandler {
 const rewriter = new HTMLRewriter();
 rewriter.on("h1", new H1ElementHandler());
 rewriter.on("head", new FlagsStateInjector());
-let ldClient;
 
 addEventListener("fetch", (event) => {
   event.respondWith(handleEvent(event));

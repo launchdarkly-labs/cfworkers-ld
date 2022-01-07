@@ -4,3 +4,4 @@ title = 'My New Hugo Site'
 theme = "introduction"
 [params]
     customJS = ["ldclient.min.js", "custom.js"]
+    favicon = "/img/fav.ico"
