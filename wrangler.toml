@@ -4,7 +4,7 @@ type = "webpack"
 webpack_config = "webpack.config.js"
 workers_dev = true
 kv_namespaces = [
-  { binding = "MY_KV", preview_id = "e88af073edb14c929600e62218359bfd", id = "ffc9417d31f54731be4a6fd77aa795cc" },
+  { binding = "MY_KV", id = "ffc9417d31f54731be4a6fd77aa795cc" },
   { binding = "SITE_ASSETS", preview_id = "43ecd3c7d05f45caa947fb48fd7b7c83", id = "a0a8f76d2fe14947826adc1453c2e90c" },
 ]
 site = { bucket = "./public" }
