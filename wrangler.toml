@@ -1,11 +1,15 @@
-account_id = "62c78308ac5d6ac35b1c395a4fc5abc8"
 name = "cfworkers-ld"
-type = "webpack"
-webpack_config = "webpack.config.js"
-workers_dev = true
+main = "worker/script.js"
+compatibility_date = "2022-10-17"
+
+account_id = "90e01918bfda495b428c123285831fff"
+
 kv_namespaces = [
-  { binding = "MY_KV", id = "ffc9417d31f54731be4a6fd77aa795cc" },
-  { binding = "SITE_ASSETS", preview_id = "43ecd3c7d05f45caa947fb48fd7b7c83", id = "a0a8f76d2fe14947826adc1453c2e90c" },
+   {binding = "MY_KV", id="daa0afa00af34c71b752f96d3330f815", preview_id="f9ea6aae479b4b56bab386f1e30acaa9"},
 ]
-site = { bucket = "./public" }
-compatibility_date = "2021-12-13"
+
+[site]
+bucket = "./public"
+
+[build]
+command = "npm run build"
