@@ -1,9 +1,15 @@
 import { getAssetFromKV } from "@cloudflare/kv-asset-handler";
 import { init, LDClient } from "launchdarkly-cloudflare-edge-sdk";
+
+// Declare MY_KV as a global variable
+declare global {
+  var MY_KV: KVNamespace;
+}
+
 let ldClient: LDClient;
 
 class FlagsStateInjector {
-  async element(element) {
+  async element(element: Element) {
     // fetch all flag values for client-side SDKs as evaluated for an anonymous user
     // use a more appropriate user key if needed
     const user = { key: "anonymous" };
@@ -18,21 +24,18 @@ class FlagsStateInjector {
 }
 
 class H1ElementHandler {
-  async element(element) {
+  async element(element: Element) {
     // replace the header text with the value of a string flag
     const headerText = await getFlagValue("header-text");
     element.setInnerContent(headerText);
   }
 }
+
 const rewriter = new HTMLRewriter();
-rewriter.on("h1", new H1ElementHandler());
 rewriter.on("head", new FlagsStateInjector());
+rewriter.on("h1", new H1ElementHandler());
 
-addEventListener("fetch", (event) => {
-  event.respondWith(handleEvent(event));
-});
-
-async function getFlagValue(key, user) {
+async function getFlagValue(key: string, user?) {
   let flagValue;
   if (!user) {
     user = {
@@ -43,27 +46,28 @@ async function getFlagValue(key, user) {
   return flagValue;
 }
 
-async function handleEvent(event) {
+addEventListener("fetch", (event) => {
+  event.respondWith(handleEvent(event));
+});
+
+async function handleEvent(event: FetchEvent) {
+  if (!ldClient) {
+    ldClient = init(MY_KV, "63455fcfeffc3d114a12c3bd", {});
+    await ldClient.waitForInitialization();
+  }
+
   let options = {};
-
   try {
-    if (!ldClient) {
-      ldClient = init(MY_KV, "61409b046ca8d52601d179ef");
-      await ldClient.waitForInitialization();
-    }
-
     const page = await getAssetFromKV(event, options);
-
-    // allow headers to be altered
     const response = new Response(page.body, page);
 
     const customHeader = await getFlagValue("custom-response-headers");
-    customHeader.headers.forEach((header) => {
+    customHeader.headers.forEach((header: { name: string; value: string }) => {
       response.headers.set(header.name, header.value);
     });
 
     return rewriter.transform(response);
-  } catch (e) {
+  } catch (e: any) {
     console.log(e);
     return new Response(e.message || e.toString(), { status: 500 });
   }

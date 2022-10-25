@@ -12,4 +12,7 @@ kv_namespaces = [
 bucket = "./public"
 
 [build]
-command = "npm run build"
+command = "npx webpack"
+
+[vars]
+LD_CLIENT_SIDE_ID="63455fcfeffc3d114a12c3bd"
