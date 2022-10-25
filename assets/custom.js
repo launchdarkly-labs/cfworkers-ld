@@ -1,5 +1,5 @@
 const client = LDClient.initialize(
-  "63455fcfeffc3d114a12c3bd",
+  "<LAUNCHDARKLY_CLIENT_ID>",
   {
     key: "anonymous",
   },
