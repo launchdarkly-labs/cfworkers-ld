@@ -10,10 +10,11 @@ let ldClient: LDClient;
 
 class FlagsStateInjector {
   async element(element: Element) {
-    // fetch all flag values for client-side SDKs as evaluated for an anonymous user
-    // use a more appropriate user key if needed
-    const user = { key: "anonymous" };
-    const allFlags = await ldClient.allFlagsState(user, {
+      // fetch all flag values for client-side SDKs 
+      // as evaluated for a context that has not logged in
+      // use a more appropriate context key if needed
+    const context = { key: 'guest' };
+    const allFlags = await ldClient.allFlagsState(context, {
       clientSideOnly: true,
     });
     element.append(
@@ -35,14 +36,14 @@ const rewriter = new HTMLRewriter();
 rewriter.on("head", new FlagsStateInjector());
 rewriter.on("h1", new H1ElementHandler());
 
-async function getFlagValue(key: string, user?) {
+async function getFlagValue(key: string, context?) {
   let flagValue;
-  if (!user) {
-    user = {
-      key: "anonymous",
+  if (!context) {
+    context = {
+      key: 'guest',
     };
   }
-  flagValue = await ldClient.variation(key, user, false);
+  flagValue = await ldClient.variation(key, context, false);
   return flagValue;
 }
 
