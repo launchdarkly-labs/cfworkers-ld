@@ -13,7 +13,7 @@ class FlagsStateInjector {
       // fetch all flag values for client-side SDKs 
       // as evaluated for a context that has not logged in
       // use a more appropriate context key if needed
-    const context = { key: "guest" };
+    const context = { key: 'guest' };
     const allFlags = await ldClient.allFlagsState(context, {
       clientSideOnly: true,
     });
@@ -40,7 +40,7 @@ async function getFlagValue(key: string, context?) {
   let flagValue;
   if (!context) {
     context = {
-      key: "guest",
+      key: 'guest',
     };
   }
   flagValue = await ldClient.variation(key, context, false);
