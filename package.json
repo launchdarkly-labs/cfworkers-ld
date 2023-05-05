@@ -1,15 +1,32 @@
 {
+  "name": "example",
+  "version": "0.0.0",
+  "type": "module",
+  "module": "./dist/index.mjs",
   "dependencies": {
     "@cloudflare/kv-asset-handler": "^0.2.0",
+    "@launchdarkly/cloudflare-server-sdk": "^2.0.3",
     "autoprefixer": "^9.8.6",
-    "launchdarkly-cloudflare-edge-sdk": "^0.1.1",
     "postcss": "^8.3.11",
     "postcss-cli": "^9.0.1"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^3.18.0",
-    "ts-loader": "^8.4.0",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^4.10.0"
+    "prettier": "^2.8.8",
+    "@cloudflare/workers-types": "^4.20230419.0",
+    "@types/jest": "^27.5.1",
+    "esbuild": "^0.14.41",
+    "jest": "^28.1.0",
+    "jest-environment-miniflare": "^2.5.0",
+    "miniflare": "^2.5.0",
+    "ts-jest": "^28.0.3",
+    "typescript": "^5.0.3",
+    "wrangler": "2.13.0"
+  },
+  "scripts": {
+    "build": "node build.js",
+    "start": "wrangler dev",
+    "deploy": "wrangler publish",
+    "prettier": "prettier --write '**/*.@(js|ts|tsx|json|css)' --ignore-path ../../../.prettierignore",
+    "test": "yarn build && node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest.js"
   }
 }
