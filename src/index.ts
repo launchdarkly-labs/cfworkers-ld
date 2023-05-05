@@ -1,5 +1,5 @@
 import { init as initLD, LDClient } from '@launchdarkly/cloudflare-server-sdk';
-import { ExecutionContext, KVNamespace, Request, Response } from '@cloudflare/workers-types';
+import { ExecutionContext, KVNamespace, Request } from '@cloudflare/workers-types';
 
 interface Bindings {
   LD_KV: KVNamespace;
