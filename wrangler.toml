@@ -1,18 +1,8 @@
-name = "cfworkers-ld"
-main = "worker/script.js"
-compatibility_date = "2022-10-17"
-
-account_id = "90e01918bfda495b428c123285831fff"
-
-kv_namespaces = [
-   {binding = "MY_KV", id="daa0afa00af34c71b752f96d3330f815", preview_id="f9ea6aae479b4b56bab386f1e30acaa9"},
-]
-
-[site]
-bucket = "./public"
+name = "example"
+main = "dist/index.mjs"
+compatibility_date = "2021-11-03"
+compatibility_flags = [ "nodejs_compat" ]
+kv_namespaces = [{ binding = "LD_KV", id = "YOUR_KV_ID", preview_id = "YOUR_PREVIEW_KV_ID" }]
 
 [build]
-command = "npx webpack"
-
-[vars]
-LD_CLIENT_SIDE_ID="63455fcfeffc3d114a12c3bd"
+command = "node build.js"
